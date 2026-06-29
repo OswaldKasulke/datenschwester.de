@@ -1,0 +1,51 @@
+name: Deploy datenschwester.de via FTP
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: FTP Deploy (WordPress-Dateien nie überschreiben)
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: w019d9c9.kasserver.com
+          username: w019d9c9
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./
+          server-dir: /datenschwester.de/
+          protocol: ftps
+          port: 21
+          exclude: |
+            **/.git*
+            **/.github/**
+            README.md
+            **/wp-admin/**
+            **/wp-includes/**
+            **/wp-content/**
+            wp-login.php
+            wp-config.php
+            wp-config-sample.php
+            wp-blog-header.php
+            wp-comments-post.php
+            wp-cron.php
+            wp-links-opml.php
+            wp-load.php
+            wp-mail.php
+            wp-settings.php
+            wp-signup.php
+            wp-trackback.php
+            wp-activate.php
+            xmlrpc.php
+            index.php
+            index.htm
+            license.txt
+            readme.html
+            liesmich.html
